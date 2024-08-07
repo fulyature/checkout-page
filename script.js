@@ -75,3 +75,80 @@ basket.forEach(({ name, price, piece, img }) => {
 </div>
   `;
 });
+calculateCardTotal();
+
+removeButton();
+
+pieceButton();
+
+function removeButton() {
+  document.querySelectorAll(".remove-product").forEach((btn) => {
+    btn.onclick = () => {
+      btn.closest(".card").remove();
+
+      calculateCardTotal();
+    };
+  });
+}
+
+//Adet değiştirme fonk.
+
+function pieceButton() {
+  document.querySelectorAll(".adet-controller").forEach((kutu) => {
+    const plus = kutu.lastElementChild;
+
+    const mines = kutu.firstElementChild;
+
+    const adet = plus.previousElementSibling;
+
+    // const adet = kutu.children[1];
+
+    //plus btn basınca olacaklar;
+
+    plus.onclick = () => {
+      adet.textContent++;
+      plus.closest(".card-body").querySelector(".product-total").textContent = (
+        plus.closest(".card-body").querySelector(".indirim-price").textContent *
+        adet.textContent
+      ).toFixed(2);
+
+      calculateCardTotal();
+    };
+
+    mines.onclick = () => {
+      adet.textContent--;
+      plus.closest(".card-body").querySelector(".product-total").textContent = (
+        plus.closest(".card-body").querySelector(".indirim-price").textContent *
+        adet.textContent
+      ).toFixed(2);
+
+      calculateCardTotal();
+
+      //adet 1 iken mine sa basılırsa ürün ekrandan silinsin.
+
+      if (adet.textContent < 1) {
+        alert("Do you want delete");
+
+        mines.closest(".card").remove();
+      }
+    };
+  });
+}
+
+function calculateCardTotal() {
+  const toplam = document.querySelectorAll(".product-total");
+
+  const pSum = Array.from(toplam).reduce(
+    (sum, item) => sum + Number(item.textContent),
+    0
+  );
+  document.querySelector(".productstoplam").textContent = pSum.toFixed(2);
+
+  document.querySelector(".vergi").textContent = (pSum * tax).toFixed(2);
+
+  document.querySelector(".kargo").textContent = pSum ? shipping : 0;
+
+  document.querySelector(".toplam").textContent = pSum
+    ? (pSum + pSum * tax + shipping).toFixed(2)
+    : 0;
+}
