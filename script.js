@@ -1,4 +1,4 @@
-//table de kullanılan değişkenler
+//!table de kullanılan değişkenler
 const shipping = 15.0;
 const tax = 0.18;
 
